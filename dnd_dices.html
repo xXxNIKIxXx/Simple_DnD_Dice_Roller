@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="title=sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
@@ -70,7 +70,7 @@
                 });
             }
 
-            function addSection() {
+            function addSection(with_dice=true) {
                 const container = document.getElementById('sections-container');
                 
                 const sectionId = `section-${sectionCounter}`;
@@ -91,7 +91,6 @@
                         <button class="btn btn-success" onclick="updateTitle(${sectionCounter})">Update Title</button>
                     </div>
                     <div id="dice-container-${sectionCounter}" class="mb-3 dice-container">
-                        ${generateDiceInputHTML(sectionCounter, 1)}
                     </div>
                     <div class="btn-group" role="group" aria-label="Basic example">
                         <button class="btn btn-success mb-3" onclick="addDice(${sectionCounter})">Add Dice</button>
@@ -116,10 +115,10 @@
                 save();
             }
 
-            function addDice(sectionId) {
+            function addDice(sectionId, diceName = '', diceType = 'D2', diceMod = '') {
                 const diceContainer = document.getElementById(`dice-container-${sectionId}`);
                 const diceCount = diceContainer.childElementCount + 1;
-                diceContainer.innerHTML += generateDiceInputHTML(sectionId, diceCount);
+                diceContainer.innerHTML += generateDiceInputHTML(sectionId, diceCount, diceName=diceName, diceType=diceType, diceMod=diceMod);
                 save();
             }
 
@@ -209,23 +208,23 @@
                 });
             }
 
-            function generateDiceInputHTML(sectionId, diceId) {
+            function generateDiceInputHTML(sectionId, diceId, diceName, diceType, diceMod) {
                 return `
                     <div class="input-group mb-2" id="dice-group-${sectionId}-${diceId}">
                         <button class="btn btn-danger btn-sm" onclick="removeDice(${sectionId}, ${diceId})">x</button>
-                        <input type="text" class="form-control" placeholder="Enter text" oninput="save()">
+                        <input type="text" class="form-control" placeholder="Enter text" value="${diceName}" oninput="save()">
                         <select class="form-select" oninput="save()">
-                            <option value="D2">D2</option>
-                            <option value="D3">D3</option>
-                            <option value="D4">D4</option>
-                            <option value="D6">D6</option>
-                            <option value="D8">D8</option>
-                            <option value="D10">D10</option>
-                            <option value="D12">D12</option>
-                            <option value="D20">D20</option>
-                            <option value="D100">D100</option>
+                            <option value="D2" ${diceType === 'D2' ? 'selected' : ''}>D2</option>
+                            <option value="D3" ${diceType === 'D3' ? 'selected' : ''}>D3</option>
+                            <option value="D4" ${diceType === 'D4' ? 'selected' : ''}>D4</option>
+                            <option value="D6" ${diceType === 'D6' ? 'selected' : ''}>D6</option>
+                            <option value="D8" ${diceType === 'D8' ? 'selected' : ''}>D8</option>
+                            <option value="D10" ${diceType === 'D10' ? 'selected' : ''}>D10</option>
+                            <option value="D12" ${diceType === 'D12' ? 'selected' : ''}>D12</option>
+                            <option value="D20" ${diceType === 'D20' ? 'selected' : ''}>D20</option>
+                            <option value="D100" ${diceType === 'D100' ? 'selected' : ''}>D100</option>
                         </select>
-                        <input type="number" class="form-control" placeholder="Modifier" oninput="save()">
+                        <input type="number" class="form-control" placeholder="Modifier" oninput="save()" value="${diceMod}">
                         <input type="text" class="form-control roll-result" placeholder="Result" disabled readonly>
                         <button class="btn btn-info" onclick="rollSingleDice(${sectionId}, ${diceId})">Roll</button>
                     </div>
@@ -263,7 +262,7 @@
                         const sectionId = index + 1;
                         document.getElementById(`title-${sectionId}`).textContent = section.title;
                         section.dices.forEach((dice, diceIndex) => {
-                            if (diceIndex > 0) addDice(sectionId);
+                            addDice(sectionId, dice.name, dice.type, dice.mod);
                             const diceGroup = document.getElementById(`dice-group-${sectionId}-${diceIndex + 1}`);
                             diceGroup.querySelector('input[type="text"]').value = dice.name;
                             diceGroup.querySelector('select').value = dice.type;
