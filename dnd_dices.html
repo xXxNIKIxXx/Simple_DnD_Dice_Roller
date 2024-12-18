@@ -70,7 +70,7 @@
                 });
             }
 
-            function addSection(with_dice=true) {
+            function addSection(title="") {
                 const container = document.getElementById('sections-container');
                 
                 const sectionId = `section-${sectionCounter}`;
@@ -87,7 +87,7 @@
                     </div>
                     <div class="input-group mb-3">
                         <button class="btn btn-danger btn-sm" onclick="removeSection('${sectionId}')">Remove Section</button>
-                        <input type="text" id="title-input-${sectionCounter}" class="form-control" placeholder="Enter new title">
+                        <input type="text" id="title-input-${sectionCounter}" class="form-control" placeholder="Enter new title" value="${title}" oninput="save()">
                         <button class="btn btn-success" onclick="updateTitle(${sectionCounter})">Update Title</button>
                     </div>
                     <div id="dice-container-${sectionCounter}" class="mb-3 dice-container">
@@ -260,6 +260,7 @@
                     data.sections.forEach((section, index) => {
                         addSection();
                         const sectionId = index + 1;
+                        console.log(document.getElementById(`title-${sectionId}`))
                         document.getElementById(`title-${sectionId}`).textContent = section.title;
                         section.dices.forEach((dice, diceIndex) => {
                             addDice(sectionId, dice.name, dice.type, dice.mod);
@@ -270,6 +271,7 @@
                         });
                     });
                 }
+                save()
             }
 
             window.onload = load;
