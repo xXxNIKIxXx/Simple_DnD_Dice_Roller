@@ -6,7 +6,7 @@ No installs, no accounts — just open in your browser and start rolling.
 ---
 
 ## ✨ Features
-- Roll standard D&D dice: **d4, d6, d8, d10, d12, d20, d100**.
+- Roll standard D&D dice: **d2, d4, d6, d8, d10, d12, d20, d100**.
 - Clean and responsive UI built with **Bootstrap 5**.
 - Instant results with simple button clicks.
 - Works offline (just open the HTML file).
